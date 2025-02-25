@@ -16,7 +16,7 @@ class Pesanan extends CI_Controller
     public function index()
     {
         $data = array(
-            'title' => 'Jewepe Wedding Organizer',
+            'title' => 'HIMTI Official Merchandise',
             'page' => 'admin/pesanan',
             'getAllPesanan' => $this->pesanan_model->get_all_pesanan()->result()
         );

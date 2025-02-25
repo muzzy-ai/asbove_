@@ -48,4 +48,16 @@ class Katalog_model extends CI_Model
         $this->db->where('id_katalog', $id);
         return $this->db->delete('tb_katalog');
     }
+
+    public function find($id)
+    {
+        $result = $this->db->where('id_katalog',$id)
+                            ->limit(1)
+                            ->get('tb_katalog');
+        if($result->num_rows()>0){
+            return $result->row();
+        }else{
+            return array();
+        }
+    }
 }

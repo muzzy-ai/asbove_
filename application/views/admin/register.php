@@ -22,22 +22,28 @@
                             <div class="brand-logo">
                                 <img src="<?= base_url('assets/landing') ?>/img/logoHOM.png" alt="logo">
                             </div>
-                            <h4>Welcome! Let's get started</h4>
-                            <h6 class="font-weight-light">Sign in to continue.</h6>
+                            <h4>Create an Account</h4>
+                            <h6 class="font-weight-light">Sign up to get started.</h6>
 
                             <?= $this->session->flashdata('message'); ?>
-                            <form class="pt-3" action="<?= base_url('Login'); ?>" method="post">
+                            <form class="pt-3" action="<?= base_url('Register'); ?>" method="post">
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-lg" name="username" placeholder="Username" required>
                                 </div>
                                 <div class="form-group">
+                                    <input type="email" class="form-control form-control-lg" name="email" placeholder="Email" required>
+                                </div>
+                                <div class="form-group">
                                     <input type="password" class="form-control form-control-lg" name="password" placeholder="Password" required>
                                 </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control form-control-lg" name="confirm_password" placeholder="Confirm Password" required>
+                                </div>
                                 <div class="mt-3">
-                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">SIGN IN</button>
+                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">REGISTER</button>
                                 </div>
                                 <div class="text-center mt-3">
-                                    <a href="<?= base_url('Register'); ?>" class="btn btn-block btn-secondary btn-lg font-weight-medium auth-form-btn">REGISTER</a>
+                                    <a href="<?= base_url('Login'); ?>" class="btn btn-block btn-secondary btn-lg font-weight-medium auth-form-btn">BACK TO LOGIN</a>
                                 </div>
                             </form>
                         </div>

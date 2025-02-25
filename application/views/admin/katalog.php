@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                     <h3 class="font-weight-bold">Manajemen Katalog</h3>
-                    <h6 class="font-weight-normal mb-0">JeWePe Wedding Organizer</span></h6>
+                    <h6 class="font-weight-normal mb-0">HIMTI Official Merchandise</span></h6>
                 </div>
             </div>
         </div>
@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-6">
-                        <h4 class="card-title">Data Katalog Paket Pernikahan</h4>
+                        <h4 class="card-title">Data Katalog Barang</h4>
                     </div>
                     <div class="col-lg-6 text-right">
                         <a href="<?= base_url('admin/Katalog/add'); ?>" class="btn btn-primary">Tambah Data</a>
@@ -29,7 +29,7 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th class="text-center">Gambar</th>
-                                <th class="text-center">Nama Paket</th>
+                                <th class="text-center">Nama Barang</th>
                                 <th class="text-center">Deskripsi</th>
                                 <th class="text-center">Harga</th>
                                 <th class="text-center">Aksi</th>

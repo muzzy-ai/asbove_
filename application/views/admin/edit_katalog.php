@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                     <h3 class="font-weight-bold">Manajemen Katalog</h3>
-                    <h6 class="font-weight-normal mb-0">JeWePe Wedding Organizer</h6>
+                    <h6 class="font-weight-normal mb-0">HIMTI Official Merchandise</h6>
                 </div>
             </div>
         </div>
@@ -19,8 +19,8 @@
                         <div class="row">
                             <div class="col-lg-8">
                                 <div class="form-group">
-                                    <label for="exampleInputName1">Nama Paket</label>
-                                    <input type="text" class="form-control" id="exampleInputName1" name="nama_paket" placeholder="Nama Paket" value="<?= $katalog->nama_paket; ?>" required>
+                                    <label for="exampleInputName1">Nama Barang</label>
+                                    <input type="text" class="form-control" id="exampleInputName1" name="nama_barang" placeholder="Nama Barang" value="<?= $katalog->nama_paket; ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <div class="editor-container">

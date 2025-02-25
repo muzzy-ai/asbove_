@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                     <h3 class="font-weight-bold">Manajemen Pesanan</h3>
-                    <h6 class="font-weight-normal mb-0">JeWePe Wedding Organizer</span></h6>
+                    <h6 class="font-weight-normal mb-0">HIMTI Official Merchandise</span></h6>
                 </div>
             </div>
         </div>
@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-6">
-                        <h4 class="card-title">Data Pesanan Paket Pernikahan</h4>
+                        <h4 class="card-title">Data Pesanan Produk</h4>
                     </div>
                     <div class="col-lg-12">
                         <?= $this->session->flashdata('message');; ?>
@@ -26,7 +26,7 @@
                             <tr>
                                 <th class="text-center">No</th>
                                 <th class="text-center">Gambar</th>
-                                <th class="text-center">Nama Paket</th>
+                                <th class="text-center">Nama Barang</th>
                                 <th class="text-center">Nama Pemesan</th>
                                 <th class="text-center">Email Pemesan</th>
                                 <th class="text-center">Status</th>

@@ -22,7 +22,7 @@ class Login extends CI_Controller
 
         if ($this->form_validation->run() == FALSE) {
             $data = array(
-                'title' => 'Jewepe Wedding Organizer',
+                'title' => 'HIMTI Official Merchandise',
             );
             $this->load->view('admin/login', $data);
         } else {

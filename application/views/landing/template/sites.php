@@ -1,5 +1,4 @@
-<?php $url = $this->uri->segment(1);
-?>
+<?php $url = $this->uri->segment(1); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +10,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="<?= base_url('assets/landing/') ?>img/logo2.png" rel="icon">
+    <link href="<?= base_url('assets/landing/') ?>img/logoHOM.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,25 +39,32 @@
     </div>
     <!-- Spinner End -->
 
-
     <!-- Navbar Start -->
     <div class="container-fluid bg-white sticky-top">
         <div class="container">
             <nav class="navbar navbar-expand-lg bg-white navbar-light py-2 py-lg-0">
                 <a href="index.html" class="navbar-brand">
-                    <img class="img-fluid" src="<?= base_url('assets/landing/') ?>img/logo2.png" alt="Logo">
+                    <img class="img-fluid" src="<?= base_url('assets/landing/') ?>img/LOGOASBOVE.jpeg" alt="Logo" style="border-radius: 50%;">
                 </a>
                 <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto">
-                        <a href="<?= base_url('') ?>" class="nav-item nav-link <?= ($url == '' || $url == 'Beranda') ? 'active' : ''; ?>">Home</a>
-                        <a href="<?= base_url('About') ?>" class="nav-item nav-link <?= $url == 'About' ? 'active' : ''; ?>">About</a>
-                        <a href="<?= base_url('Login') ?>" class="nav-item nav-link">Login</a>
-                    </div>
-                    <div class="border-start ps-4 d-none d-lg-block">
-                        <button type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
+                    <div class="navbar-nav ms-auto"> <!-- Navbar menu ke kanan -->
+                        <a href="<?= base_url('') ?>" class="nav-item nav-link <?= ($url == '' || $url == 'Beranda') ? 'active' : ''; ?>" style="font-size: 1.2rem;">Home</a>
+                        <a href="<?= base_url('About') ?>" class="nav-item nav-link <?= $url == 'About' ? 'active' : ''; ?>" style="font-size: 1.2rem;">About</a>
+                        <a href="<?= base_url('Login') ?>" class="nav-item nav-link" style="font-size: 1.2rem;">Login</a>
+
+                        <!-- Keranjang -->
+                        <a href="<?= base_url('Beranda/detail_keranjang',$keranjang) ?>" class="nav-item nav-link position-relative" style="font-size: 1.2rem;">
+                            <i class="bi bi-cart3" style="position: relative; font-size: 1.5rem;"></i>
+                            <span id="cart-count" class="position-absolute badge rounded-pill bg-danger"
+                                style="top: 10px; right: -8px; transform: translate(0, 50%); font-size: 0.75rem; padding: 4px 6px;">
+                                <?php echo $this->cart->total_items(); ?>
+                            </span>
+                        </a>
+
+
                     </div>
                 </div>
             </nav>
@@ -74,9 +80,9 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-primary mb-4">Our Office</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i><?= $getDataWeb->alamat; ?></p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i><?= $getDataWeb->no_telp; ?></p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i><?= $getDataWeb->email_website; ?></p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Bekasi, Indonesia</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>0123456789</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>himtiug@gmail.com</p>
                     <div class="d-flex pt-3">
                         <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
@@ -84,37 +90,25 @@
                         <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-primary mb-4">Business Hours</h4>
-                    <p class="mb-1">Monday - Friday</p>
-                    <h6 class="text-light">09:00 am - 07:00 pm</h6>
-                    <p class="mb-1">Saturday</p>
-                    <h6 class="text-light">09:00 am - 12:00 pm</h6>
-                    <p class="mb-1">Sunday</p>
-                    <h6 class="text-light">Closed</h6>
-                </div>
             </div>
         </div>
     </div>
     <!-- Footer End -->
-
 
     <!-- Copyright Start -->
     <div class="container-fluid copyright py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    &copy; <a class="fw-medium" href="#"><?= $getDataWeb->nama_website; ?></a>, All Right Reserved.
+                    &copy; <a class="fw-medium" href="#"> ASBOVE</a>, All Right Reserved.
                 </div>
             </div>
         </div>
     </div>
     <!-- Copyright End -->
 
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -126,6 +120,20 @@
 
     <!-- Template Javascript -->
     <script src="<?= base_url('assets/landing/') ?>js/main.js"></script>
+
+    <!-- Update Cart Count -->
+    <script>
+        $(document).ready(function() {
+            // Ambil jumlah item di keranjang dari server secara real-time
+            function updateCartCount() {
+                $.get("<?= base_url('Cart/getCartCount') ?>", function(data) {
+                    $("#cart-count").text(data);
+                });
+            }
+
+            updateCartCount();
+        });
+    </script>
 </body>
 
 </html>

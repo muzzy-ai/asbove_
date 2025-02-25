@@ -17,7 +17,7 @@ class Katalog extends CI_Controller
     public function index()
     {
         $data = array(
-            'title' => 'Jewepe Wedding Organizer',
+            'title' => 'HIMTI Official Merchandise',
             'page' => 'admin/katalog',
             'getAllKatalog' => $this->katalog_model->get_all_katalog()->result()
         );
@@ -27,7 +27,7 @@ class Katalog extends CI_Controller
     public function add()
     {
         $data = array(
-            'title' => 'Jewepe Wedding Organizer',
+            'title' => 'HIMTI Official Merchandise',
             'page' => 'admin/add_katalog',
 
         );
@@ -41,7 +41,7 @@ class Katalog extends CI_Controller
 
             if ($cek_data > 0) {
                 $data = array(
-                    'title' => 'Jewepe Wedding Organizer',
+                    'title' => 'HIMTI Official Merchandise',
                     'page' => 'admin/edit_katalog',
                     'katalog' => $this->katalog_model->get_katalog_by_id($this->input->get('id'))->row()
                 );

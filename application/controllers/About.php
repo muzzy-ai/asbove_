@@ -12,7 +12,7 @@ class About extends CI_Controller
     public function index()
     {
         $data = array(
-            'title' => 'Jewepe Wedding Organizer',
+            'title' => 'HIMTI Official Merchandise',
             'page' => 'landing/about',
             'getDataWeb' => $this->profile_model->getProfile('1')->row()
         );

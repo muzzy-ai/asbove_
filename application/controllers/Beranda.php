@@ -9,17 +9,15 @@ class Beranda extends CI_Controller
         $this->load->database();
         $this->load->model('katalog_model');
         $this->load->model('pesanan_model');
-        $this->load->model('profile_model');
         $this->load->helper('text');
     }
 
     public function index()
     {
         $data = array(
-            'title' => 'Jewepe Wedding Organizer',
+            'title' => 'ASBOVE',
             'page' => 'landing/beranda',
-            'getAllKatalog' => $this->katalog_model->get_all_katalog()->result(),
-            'getDataWeb' => $this->profile_model->getProfile('1')->row(),
+            'getAllKatalog' => $this->katalog_model->get_all_katalog()->result()
         );
         $this->load->view('landing/template/sites', $data);
     }
@@ -31,7 +29,7 @@ class Beranda extends CI_Controller
 
             if ($cek_data > 0) {
                 $data = array(
-                    'title' => 'Jewepe Wedding Organizer',
+                    'title' => 'ASBOVE',
                     'page' => 'landing/detail',
                     'katalog' => $this->katalog_model->get_katalog_by_id($this->input->get('id'))->row()
                 );
@@ -49,7 +47,7 @@ class Beranda extends CI_Controller
         if ($this->input->post()) {
 
             $post = $this->input->post();
-            $cek_data = $this->pesanan_model->cek_data_pesanan($post['id'], $post['email_pemesan'], $post['tanggal'])->num_rows();
+            $cek_data = $this->pesanan_model->cek_data_pesanan($post['id'], $post['email_pemesan'], $post['nama_barang'])->num_rows();
 
             if ($cek_data == 0) {
 
@@ -57,7 +55,7 @@ class Beranda extends CI_Controller
                     'id_katalog' => $post['id'],
                     'nama_pemesan' => $post['nama_pemesan'],
                     'email_pemesan' => $post['email_pemesan'],
-                    'tanggal' => $post['tanggal'],
+                    'nama_barang' => $post['nama_barang'],
                     'status' => 'requested',
                 );
 
@@ -70,12 +68,22 @@ class Beranda extends CI_Controller
                     $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>UPSS! </strong>Maaf, Permintaan pesanan gagal! <i class="remove ti-close" data-dismiss="alert"></i></div>');
                     redirect('Beranda/detail?id=' . $post['id']);
                 }
-            } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>UPSS! </strong>Maaf, Paket dan Tanggal pernikahan sudah anda pesan sebelumnya, silahkan tunggu konfirmasi dari kami! <i class="remove ti-close" data-dismiss="alert"></i></div>');
-                redirect('Beranda/detail?id=' . $post['id']);
-            }
+            } 
         } else {
             redirect('Beranda');
         }
     }
+
+    public function tambah_ke_keranjang() {
+        $data = array(
+            'id'      => $this->input->post('id_katalog'),
+            'qty'     => $this->input->post('qty'),
+            'price'   => $this->input->post('harga'),
+            'name'    => $this->input->post('nama_paket')
+        );
+    
+        $this->cart->insert($data);
+        redirect('Beranda/'); // Redirect ke halaman keranjang
+    }
+    
 }

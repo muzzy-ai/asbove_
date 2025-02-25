@@ -16,7 +16,7 @@ class Dashboard extends CI_Controller
     public function index()
     {
         $data = array(
-            'title' => 'Jewepe Wedding Organizer',
+            'title' => 'HIMTI Official Merchandise',
             'page' => 'admin/dashboard',
             'TotalKatalog' => $this->katalog_model->get_all_katalog()->num_rows(),
             'TotalPesanan' => $this->pesanan_model->get_count_pesanan('all')->num_rows(),

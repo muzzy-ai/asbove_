@@ -50,14 +50,13 @@ class Pesanan_model extends CI_Model
         return $query;
     }
 
-    public function cek_data_pesanan($id, $email, $tanggal)
+    public function cek_data_pesanan($id, $email)
     {
         $this->db->select('*');
         $this->db->from('tb_order tbo');
         $this->db->join('tb_katalog tbc', 'tbc.id_katalog = tbo.id_katalog');
         $this->db->where('tbo.id_katalog', $id);
         $this->db->where('tbo.email_pemesan', $email);
-        $this->db->where('tbo.tanggal', $tanggal);
         $query = $this->db->get();
         return $query;
     }

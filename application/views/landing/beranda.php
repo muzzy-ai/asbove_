@@ -3,26 +3,26 @@
     <div id="header-carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="w-100" src="<?= base_url('assets/landing/') ?>img/carousel-1.jpg" alt="Image">
+                <img class="w-100" src="<?= base_url('assets/landing/') ?>img/background.jpeg" alt="Image">
                 <div class="carousel-caption">
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-7 text-center">
-                                <p class="fs-4 text-white animated zoomIn">Selamat Datang Di <strong class="text-dark">JeWePe Wedding Organizer</strong></p>
-                                <h1 class="display-1 text-dark mb-4 animated zoomIn">Mengabadikan Momen Pernikahan Anda</h1>
+                                <p class="fs-4 text-white animated zoomIn">Selamat Datang Di <strong class="text-dark">ASBOVE KATALOG</strong></p>
+                                <h1 class="display-1 text-dark mb-4 animated zoomIn">Ayo beli Produk terbaru dari Kami sekarang!</h1>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="carousel-item">
-                <img class="w-100" src="<?= base_url('assets/landing/') ?>img/carousel-2.jpg" alt="Image">
+                <img class="w-100" src="<?= base_url('assets/landing/') ?>img/background.jpeg" alt="Image">
                 <div class="carousel-caption">
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-7 text-center">
-                                <p class="fs-4 text-white animated zoomIn">Selamat Datang Di <strong class="text-dark">JeWePe Wedding Organizer</strong></p>
-                                <h1 class="display-1 text-dark mb-4 animated zoomIn">Mengabadikan Momen Pernikahan Anda</h1>
+                                <p class="fs-4 text-white animated zoomIn">Selamat Datang Di <strong class="text-dark">ASBOVE</strong></p>
+                                <h1 class="display-1 text-dark mb-4 animated zoomIn">Ayo beli Produk terbaru dari Kami sekarang!</h1>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
     <div class="container">
         <div class="section-title text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
             <p class="fs-5 fw-medium fst-italic text-primary">Online Store</p>
-            <h1 class="display-6">Katalog Paket Pernikahan</h1>
+            <h1 class="display-6">Katalog Barang</h1>
         </div>
         <div class="row g-4">
             <?php

@@ -20,43 +20,25 @@
             </div>
             <div class="col-lg-7 wow fadeIn" data-wow-delay="0.5s">
                 <div class="section-title">
-                    <p class="fs-5 fw-medium fst-italic text-primary">JeWePe Wedding Organizer</p>
+                    <p class="fs-5 fw-medium fst-italic text-primary">ASBOVE</p>
                     <?= $this->session->flashdata('message'); ?>
                     <h1 class="display-6"><?= $katalog->nama_paket; ?></h1>
                 </div>
-                <?= $katalog->deskripsi; ?>
+                <p><?= $katalog->deskripsi; ?></p>
                 <h3 class="text-primary">Rp. <?= number_format($katalog->harga, 2, ",", "."); ?></h3>
-            </div>
-            <div class="col-lg-7 ms-auto wow fadeInUp" data-wow-delay="0.1s">
-                <h4 class="mb-4">Tertarik Paket Ini? Yuk Langsung Pesan</h4>
-                <form action="<?= base_url('Beranda/pesan'); ?>" method="post">
-                    <input type="hidden" name="id" value="<?= $this->input->get('id'); ?>">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="text" class="form-control" id="name" name="nama_pemesan" placeholder="Nama Anda" required>
-                                <label for="name">Nama Anda</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="email" class="form-control" id="email" name="email_pemesan" placeholder="Email Anda" required>
-                                <label for="email">Email Anda</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-floating">
-                                <input type="date" class="form-control" id="subject" name="tanggal" placeholder="Tanggal Pernikahan" required>
-                                <label for="subject">Tanggal Pernikahan</label>
-                            </div>
-                        </div>
-                        <div class="col-12 text-end">
-                            <button class="btn btn-primary rounded-pill py-3 px-5" type="submit">Pesan Paket</button>
-                        </div>
-                    </div>
-                </form>
+
+                <!-- Form Tambah ke Keranjang -->
+                <?= form_open('Beranda/tambah_ke_keranjang'); ?>
+                    <input type="hidden" name="id_katalog" value="<?= $katalog->id_katalog; ?>">
+                    <input type="hidden" name="nama_paket" value="<?= $katalog->nama_paket; ?>">
+                    <input type="hidden" name="harga" value="<?= $katalog->harga; ?>">
+
+                    <label for="qty">Jumlah:</label>
+                    <input type="number" name="qty" id="qty" value="1" min="1" class="form-control mb-3" style="width: 100px;">
+
+                    <button type="submit" class="btn btn-primary btn-sm">Tambah ke Keranjang</button>
+                <?= form_close(); ?>
             </div>
         </div>
     </div>
-
 </div>
