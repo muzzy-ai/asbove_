@@ -124,7 +124,7 @@
     margin-left: 8px;
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 758px) {
     .navbar .navbar-brand {
         width: 126px;
         height: 100px;

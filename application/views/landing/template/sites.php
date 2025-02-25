@@ -44,7 +44,7 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg bg-white navbar-light py-2 py-lg-0">
                 <a href="index.html" class="navbar-brand">
-                    <img class="img-fluid" src="<?= base_url('assets/landing/') ?>img/LOGOASBOVE.jpeg" alt="Logo" style="border-radius: 50%;">
+                    <img class="img-fluid" src="<?= base_url('assets/landing/') ?>img/LOGOASBOVE.jpeg" alt="Logo" style="border-radius: 50%; width: 80px; height: auto;">
                 </a>
                 <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
@@ -53,10 +53,15 @@
                     <div class="navbar-nav ms-auto"> <!-- Navbar menu ke kanan -->
                         <a href="<?= base_url('') ?>" class="nav-item nav-link <?= ($url == '' || $url == 'Beranda') ? 'active' : ''; ?>" style="font-size: 1.2rem;">Home</a>
                         <a href="<?= base_url('About') ?>" class="nav-item nav-link <?= $url == 'About' ? 'active' : ''; ?>" style="font-size: 1.2rem;">About</a>
-                        <a href="<?= base_url('Login') ?>" class="nav-item nav-link" style="font-size: 1.2rem;">Login</a>
+                        <?php if ($this->session->userdata('username')): ?>
+                            <a href="#" class="nav-item nav-link" style="font-size: 1.2rem;">Hello, <?= $this->session->userdata('username'); ?></a>
+                            <a href="<?= base_url('login/logout') ?>" class="nav-item nav-link text-danger" style="font-size: 1.2rem;">Logout</a>
+                        <?php else: ?>
+                            <a href="<?= base_url('Login') ?>" class="nav-item nav-link" style="font-size: 1.2rem;">Login</a>
+                        <?php endif; ?>
 
                         <!-- Keranjang -->
-                        <a href="<?= base_url('Beranda/detail_keranjang',$keranjang) ?>" class="nav-item nav-link position-relative" style="font-size: 1.2rem;">
+                        <a href="<?= base_url('Cart/detail_keranjang') ?>" class="nav-item nav-link position-relative" style="font-size: 1.2rem;">
                             <i class="bi bi-cart3" style="position: relative; font-size: 1.5rem;"></i>
                             <span id="cart-count" class="position-absolute badge rounded-pill bg-danger"
                                 style="top: 10px; right: -8px; transform: translate(0, 50%); font-size: 0.75rem; padding: 4px 6px;">

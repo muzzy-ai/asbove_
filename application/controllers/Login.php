@@ -3,7 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Login extends CI_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -13,58 +12,43 @@ class Login extends CI_Controller
 
     public function index()
     {
-        // $passDefault = password_hash('admin123', PASSWORD_DEFAULT);
-        // var_dump($passDefault);
-        // die;
-
         $this->form_validation->set_rules('username', 'Username', 'trim|required');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
-            $data = array(
-                'title' => 'HIMTI Official Merchandise',
-            );
+            $data = array('title' => 'HIMTI Official Merchandise');
             $this->load->view('admin/login', $data);
         } else {
-            //validasi success
             if ($this->input->post()) {
-
                 $post = $this->input->post();
+                $username = $post["username"];
 
-                //cari user berdasarkan username
-
-                $where1 = $post["username"];
-                // $where2 = array('username' => $post['username'], 'id_user' => 2);
-
-                $user = $this->user_model->getUserByUsername1($where1)->row();
-
-                // var_dump($user);
-                // die;
-
-                // jika user terdaftar
+                // Ambil data user berdasarkan username
+                $user = $this->user_model->getUserByUsername1($username)->row();
 
                 if ($user) {
-                    //perikas password
-                    $isPasswordTrue = password_verify($post["password"], $user->password);
+                    // Periksa password
+                    if (password_verify($post["password"], $user->password)) {
+                        // Buat session
+                        $session_data = array(
+                            'id_user' => $user->id_user,
+                            'username' => $user->username,
+                            'role' => $user->role // Pastikan ada kolom role di tabel user
+                        );
+                        $this->session->set_userdata($session_data);
 
-                    //generate session
-                    $array = array(
-                        'id_user' => $user->id_user,
-                        'username' => $user->username
-                    );
-                    $this->session->set_userdata($array);
-
-                    if ($isPasswordTrue) {
-                        redirect('admin/Dashboard');
-                        return true;
+                        // Cek role user dan redirect sesuai role
+                        if ($user->role == 1) {
+                            redirect('admin/Dashboard'); // Admin
+                        } else {
+                            redirect('beranda'); // Pengguna biasa
+                        }
                     } else {
-                        $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert"><strong>Upss </strong>Password
-                        Anda Tidak Sesuai!</div>');
+                        $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">Password Anda salah!</div>');
                         redirect('login');
                     }
                 } else {
-                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"><strong>Upss </strong>Username
-                    Anda Tidak Terdaftar!</div>');
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Username tidak terdaftar!</div>');
                     redirect('login');
                 }
             }
@@ -75,6 +59,7 @@ class Login extends CI_Controller
     {
         $this->session->unset_userdata('id_user');
         $this->session->unset_userdata('username');
+        $this->session->unset_userdata('role');
         $this->session->sess_destroy();
         redirect('login');
     }
