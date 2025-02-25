@@ -24,7 +24,7 @@ class Login extends CI_Controller
                 $username = $post["username"];
 
                 // Ambil data user berdasarkan username
-                $user = $this->user_model->getUserByUsername1($username)->row();
+                $user = $this->user_model->getUserByUsername($username)->row();
 
                 if ($user) {
                     // Periksa password

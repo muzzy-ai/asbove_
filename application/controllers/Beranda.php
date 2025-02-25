@@ -75,6 +75,13 @@ class Beranda extends CI_Controller
     }
 
     public function tambah_ke_keranjang() {
+        // Periksa apakah pengguna sudah login
+        if (!$this->session->userdata('id_user')) {
+            // Jika belum login, arahkan ke halaman login
+            redirect('/login');
+        }
+    
+        // Jika sudah login, tambahkan produk ke keranjang
         $data = array(
             'id'      => $this->input->post('id_katalog'),
             'qty'     => $this->input->post('qty'),
@@ -85,5 +92,6 @@ class Beranda extends CI_Controller
         $this->cart->insert($data);
         redirect('Beranda/'); // Redirect ke halaman keranjang
     }
+    
     
 }

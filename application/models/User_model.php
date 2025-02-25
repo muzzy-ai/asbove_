@@ -8,16 +8,14 @@ class User_model extends CI_Model
         $this->load->database();
     }
 
-
-    public function getUserByUsername1($username)
+    // Ambil data user berdasarkan username
+    public function getUserByUsername($username)
     {
-        $sql = 'select * from tb_user 
-        where username = ' . $this->db->escape($username);
-        $query = $this->db->query($sql);
-        return $query;
+        return $this->db->get_where('tb_user', ['username' => $username]);
     }
 
-    public function getUserByUsername2($where)
+    // Ambil data user dengan filter
+    public function getUserByFilter($where)
     {
         return $this->db->select('id_user, nama, username, password')
             ->from('tb_user')
@@ -25,18 +23,23 @@ class User_model extends CI_Model
             ->get();
     }
 
-    public function getUserByUsername3($username)
-    {
-        $this->db->select('id_user, username, password');
-        $this->db->where('username', $username);
-        $query = $this->db->get("tb_user");
-        return $query;
-    }
-
+    // Ambil semua user
     public function getAllUser()
     {
         $this->db->order_by("id_user", "desc");
-        $query = $this->db->get("tb_user");
-        return $query;
+        return $this->db->get("tb_user");
+    }
+
+    // Simpan user baru ke database
+    public function insertUser($data)
+    {
+        return $this->db->insert('tb_user', $data);
+    }
+
+    // Periksa apakah username sudah ada
+    public function isUsernameExists($username)
+    {
+        $query = $this->db->get_where('tb_user', ['username' => $username]);
+        return $query->num_rows() > 0; // Jika lebih dari 0, berarti username sudah ada
     }
 }

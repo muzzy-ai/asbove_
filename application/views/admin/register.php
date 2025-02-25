@@ -22,22 +22,23 @@
                             <div class="brand-logo">
                                 <img src="<?= base_url('assets/landing') ?>/img/logoHOM.png" alt="logo">
                             </div>
-                            <h4>Create an Account</h4>
-                            <h6 class="font-weight-light">Sign up to get started.</h6>
+                            <h4>Register Account</h4>
+                            <h6 class="font-weight-light">Create your account to continue.</h6>
 
                             <?= $this->session->flashdata('message'); ?>
+                            
                             <form class="pt-3" action="<?= base_url('Register'); ?>" method="post">
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" name="username" placeholder="Username" required>
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control form-control-lg" name="email" placeholder="Email" required>
+                                    <input type="text" class="form-control form-control-lg" name="username" placeholder="Username" required value="<?= set_value('username'); ?>">
+                                    <?= form_error('username', '<small class="text-danger">', '</small>'); ?>
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control form-control-lg" name="password" placeholder="Password" required>
+                                    <?= form_error('password', '<small class="text-danger">', '</small>'); ?>
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-lg" name="confirm_password" placeholder="Confirm Password" required>
+                                    <input type="password" class="form-control form-control-lg" name="password_confirm" placeholder="Confirm Password" required>
+                                    <?= form_error('password_confirm', '<small class="text-danger">', '</small>'); ?>
                                 </div>
                                 <div class="mt-3">
                                     <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">REGISTER</button>

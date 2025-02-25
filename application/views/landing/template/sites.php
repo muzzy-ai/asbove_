@@ -54,7 +54,7 @@
                         <a href="<?= base_url('') ?>" class="nav-item nav-link <?= ($url == '' || $url == 'Beranda') ? 'active' : ''; ?>" style="font-size: 1.2rem;">Home</a>
                         <a href="<?= base_url('About') ?>" class="nav-item nav-link <?= $url == 'About' ? 'active' : ''; ?>" style="font-size: 1.2rem;">About</a>
                         <?php if ($this->session->userdata('username')): ?>
-                            <a href="#" class="nav-item nav-link" style="font-size: 1.2rem;">Hello, <?= $this->session->userdata('username'); ?></a>
+                            <a href="#" class="nav-item nav-link" style="font-size: 1.2rem;"><?= $this->session->userdata('username'); ?></a>
                             <a href="<?= base_url('login/logout') ?>" class="nav-item nav-link text-danger" style="font-size: 1.2rem;">Logout</a>
                         <?php else: ?>
                             <a href="<?= base_url('Login') ?>" class="nav-item nav-link" style="font-size: 1.2rem;">Login</a>
