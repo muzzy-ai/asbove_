@@ -10,7 +10,7 @@ class Pesanan extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"><strong>Upss </strong>Anda Tidak Memiliki Akses, silahkan login</div>');
             redirect("login");
         }
-        $this->load->model('pesanan_model');
+        $this->load->model('admin_model');
     }
 
     public function index()
@@ -18,7 +18,7 @@ class Pesanan extends CI_Controller
         $data = array(
             'title' => 'HIMTI Official Merchandise',
             'page' => 'admin/pesanan',
-            'getAllPesanan' => $this->pesanan_model->get_all_pesanan()->result()
+            'getAllPesanan' => $this->admin_model->get_orders()
         );
         $this->load->view('admin/template/main', $data);
     }

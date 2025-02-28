@@ -7,60 +7,114 @@ class Checkout extends CI_Controller
     {
         parent::__construct();
         $this->load->database();
-        $this->load->model('checkout_model'); // Model untuk proses checkout
+        $this->load->model('Checkout_model');
         $this->load->helper(array('form', 'url'));
-        $this->load->library('cart'); // Memuat library cart untuk manajemen keranjang
+        $this->load->library('cart');
+        $this->config->load('config_midtrans'); // Pastikan konfigurasi dimuat
+
+        // Load Midtrans Library
+        require_once APPPATH . 'third_party/midtrans/Midtrans.php';
+
+        $midtransConfig = $this->config->item('midtrans');
+
+        // Log untuk debug
+        log_message('error', 'Midtrans Config: ' . print_r($midtransConfig, true));
+
+        // Cek apakah konfigurasi ada sebelum mengaksesnya
+        if (!isset($midtransConfig) || empty($midtransConfig['server_key'])) {
+            show_error("Konfigurasi Midtrans tidak ditemukan atau kosong!", 500);
+            return;
+        }
+
+        \Midtrans\Config::$serverKey = $midtransConfig['server_key'];
+        \Midtrans\Config::$isProduction = $midtransConfig['is_production'];
+        \Midtrans\Config::$isSanitized = $midtransConfig['is_sanitized'];
+        \Midtrans\Config::$is3ds = $midtransConfig['is_3ds'];
     }
 
     public function index()
     {
+        $midtransConfig = $this->config->item('midtrans');
+
         $data = array(
             'title' => 'Checkout',
-            'page' => 'cart/tampilan_checkout', // Ubah lokasi view
-            'cart_items' => $this->cart->contents(), // Ambil isi keranjang
-            'total' => $this->cart->total() // Total pembelian
+            'page' => 'cart/tampilan_checkout',
+            'cart_items' => $this->cart->contents(),
+            'total' => $this->cart->total(),
+            'client_key' => $midtransConfig['client_key'] ?? ''
         );
 
-        $this->load->view('landing/template/sites', $data); // Load tampilan checkout
+        $this->load->view('landing/template/sites', $data);
     }
 
     public function process_payment()
     {
-        if ($this->input->post()) {
-            $post = $this->input->post();
-
-            $order_data = array(
-                'nama_pelanggan' => $post['name'],
-                'email' => $post['email'], // Simpan email pelanggan
-                'alamat' => $post['address'],
-                'metode_pengiriman' => $post['shipping'],
-                'total_pembelian' => $post['total'],
-                'status' => 'pending',
-                'created_at' => date('Y-m-d H:i:s')
-            );
-            $cart_items = $this->cart->contents();
-
-            $insert = $this->checkout_model->insert_order($order_data,$cart_items);
-
-            if ($insert) {
-                $this->session->set_flashdata('message', '<div class="alert alert-success">Pesanan berhasil diproses!</div>');
-                redirect('Checkout/payment_success');
-            } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger">Terjadi kesalahan, silakan coba lagi.</div>');
-                redirect('Checkout');
-            }
-        } else {
-            redirect('Checkout');
+        $post = $this->input->post();
+        if (!$post) {
+            redirect('checkout');
+            return;
         }
-    }
 
-    public function payment_success()
-    {
-        $data = array(
-            'title' => 'Pembayaran Berhasil',
-            'page' => 'cart/payment_success' // Ubah lokasi view
+        // Pastikan semua data yang dibutuhkan tersedia
+        $name = $post['name'] ?? null;
+        $email = $post['email'] ?? null;
+        $address = $post['address'] ?? null;
+        $shipping = $post['shipping'] ?? null;
+        $total = isset($post['total']) ? (int) $post['total'] : 0;
+
+        if (!$name || !$email || !$address || !$shipping || $total <= 0) {
+            echo json_encode(['error' => 'Data tidak lengkap']);
+            return;
+        }
+
+        // Simpan Order ke Database
+        $order_id = 'ORDER-' . time();
+        $order_data = array(
+            'id' => $order_id,
+            'nama_pelanggan' => $name,
+            'email' => $email,
+            'alamat' => $address,
+            'metode_pengiriman' => $shipping,
+            'total_pembelian' => $total,
+            'status' => 'pending',
+            'created_at' => date('Y-m-d H:i:s')
         );
 
-        $this->load->view('cart/payment_success', $data); // Load tampilan sukses
+        $cart_items = $this->cart->contents();
+        $this->Checkout_model->insert_order($order_data, $cart_items);
+
+        // Midtrans Payment Gateway
+        $transaction_details = array(
+            'order_id' => $order_id,
+            'gross_amount' => $total
+        );
+
+        $item_details = [];
+        foreach ($cart_items as $item) {
+            $item_details[] = array(
+                'id' => $item['id'],
+                'price' => (int) $item['price'],
+                'quantity' => $item['qty'],
+                'name' => $item['name']
+            );
+        }
+
+        $customer_details = array(
+            'first_name' => $name,
+            'email' => $email
+        );
+
+        $transaction = array(
+            'transaction_details' => $transaction_details,
+            'item_details' => $item_details,
+            'customer_details' => $customer_details
+        );
+
+        try {
+            $snapToken = \Midtrans\Snap::getSnapToken($transaction);
+            echo json_encode(['token' => $snapToken]);
+        } catch (Exception $e) {
+            echo json_encode(['error' => $e->getMessage()]);
+        }
     }
 }

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/admin') ?>/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="<?= base_url('assets/admin') ?>/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="<?= base_url('assets/admin') ?>/css/vertical-layout-light/style.css">
-    <link rel="shortcut icon" href="<?= base_url('assets/landing') ?>/img/logoHOM.png" />
+    <link rel="shortcut icon" href="<?= base_url('assets/landing') ?>/img/LOGOASBOVE.jpeg" />
 </head>
 
 <body>
@@ -19,9 +19,8 @@
                 <div class="row w-100 mx-0">
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
-                            <div class="brand-logo">
-                                <img src="<?= base_url('assets/landing') ?>/img/logoHOM.png" alt="logo">
-                            </div>
+                        <img src="<?= base_url('assets/landing') ?>/img/LOGOASBOVE.jpeg" alt="logo" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+
                             <h4>Register Account</h4>
                             <h6 class="font-weight-light">Create your account to continue.</h6>
 

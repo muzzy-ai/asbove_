@@ -27,17 +27,27 @@
                 <p><?= $katalog->deskripsi; ?></p>
                 <h3 class="text-primary">Rp. <?= number_format($katalog->harga, 2, ",", "."); ?></h3>
 
-                <!-- Form Tambah ke Keranjang -->
+                                <!-- Form Tambah ke Keranjang -->
                 <?= form_open('Beranda/tambah_ke_keranjang'); ?>
                     <input type="hidden" name="id_katalog" value="<?= $katalog->id_katalog; ?>">
                     <input type="hidden" name="nama_paket" value="<?= $katalog->nama_paket; ?>">
                     <input type="hidden" name="harga" value="<?= $katalog->harga; ?>">
+
+                    <label for="size">Pilih Ukuran:</label>
+                    <select name="size" id="size" class="form-control mb-3" style="width: 150px;">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </select>
 
                     <label for="qty">Jumlah:</label>
                     <input type="number" name="qty" id="qty" value="1" min="1" class="form-control mb-3" style="width: 100px;">
 
                     <button type="submit" class="btn btn-primary btn-sm">Tambah ke Keranjang</button>
                 <?= form_close(); ?>
+
             </div>
         </div>
     </div>

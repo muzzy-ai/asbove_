@@ -21,6 +21,7 @@
                         <td style="padding: 10px;"><?= $item['name']; ?></td>
                         <td style="padding: 10px;">Rp<?= number_format($item['price'], 0, ',', '.'); ?></td>
                         <td style="padding: 10px; text-align: center;"><?= $item['qty']; ?></td>
+                        <td style="padding: 10px; text-align: center;"><?= isset($item['options']['size']) ? $item['options']['size'] : '-'; ?></td> <!-- Tambahkan size -->
                         <td style="padding: 10px;">Rp<?= number_format($item['subtotal'], 0, ',', '.'); ?></td>
                         <td style="padding: 10px;">
                             <a href="<?= base_url('Cart/hapus_item/' . $item['rowid']) ?>" style="text-decoration: none; background-color: #dc3545; color: white; padding: 6px 12px; border-radius: 5px; display: inline-block;">Hapus</a>
@@ -31,10 +32,11 @@
             } else { 
             ?>
                 <tr>
-                    <td colspan="5" style="padding: 15px; text-align: center; font-size: 18px; color: #666;">Keranjang masih kosong</td>
+                    <td colspan="6" style="padding: 15px; text-align: center; font-size: 18px; color: #666;">Keranjang masih kosong</td>
                 </tr>
             <?php } ?>
         </tbody>
+
         <?php if (!empty($cart_items)) { ?>
         <tfoot>
             <tr style="background-color: #f8f9fa; font-weight: bold;">

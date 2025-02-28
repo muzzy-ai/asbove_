@@ -10,7 +10,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="<?= base_url('assets/landing/') ?>img/logoHOM.png" rel="icon">
+    <link href="<?= base_url('assets/landing/') ?>img/LOGOASBOVE.jpeg" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -87,7 +87,7 @@
                     <h4 class="text-primary mb-4">Our Office</h4>
                     <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Bekasi, Indonesia</p>
                     <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>0123456789</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>himtiug@gmail.com</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>@gmail.com</p>
                     <div class="d-flex pt-3">
                         <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>

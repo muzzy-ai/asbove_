@@ -16,7 +16,7 @@ class Login extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
-            $data = array('title' => 'HIMTI Official Merchandise');
+            $data = array('title' => 'ASBOVE');
             $this->load->view('admin/login', $data);
         } else {
             if ($this->input->post()) {

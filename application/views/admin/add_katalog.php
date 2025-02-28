@@ -19,7 +19,7 @@
                             <div class="col-lg-8">
                                 <div class="form-group">
                                     <label for="exampleInputName1">Nama Barang</label>
-                                    <input type="text" class="form-control" id="exampleInputName1" name="nama_barang" placeholder="Nama_Barang" value="" required>
+                                    <input type="text" class="form-control" id="exampleInputName1" name="nama_paket" placeholder="Nama_paket" value="" required>
                                 </div>
                                 <div class="form-group">
                                     <div class="editor-container">

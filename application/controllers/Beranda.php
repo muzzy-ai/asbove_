@@ -75,22 +75,22 @@ class Beranda extends CI_Controller
     }
 
     public function tambah_ke_keranjang() {
-        // Periksa apakah pengguna sudah login
-        if (!$this->session->userdata('id_user')) {
-            // Jika belum login, arahkan ke halaman login
-            redirect('/login');
+        // Pastikan user login sebelum menambahkan ke keranjang
+        if (!$this->session->userdata('username')) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger">Silakan login terlebih dahulu!</div>');
+            redirect('himtihom/login');
         }
     
-        // Jika sudah login, tambahkan produk ke keranjang
         $data = array(
             'id'      => $this->input->post('id_katalog'),
             'qty'     => $this->input->post('qty'),
             'price'   => $this->input->post('harga'),
-            'name'    => $this->input->post('nama_paket')
+            'name'    => $this->input->post('nama_paket'),
+            'options' => array('size' => $this->input->post('size')) // Tambahkan ukuran
         );
     
         $this->cart->insert($data);
-        redirect('Beranda/'); // Redirect ke halaman keranjang
+        redirect('Beranda/'); // Redirect ke halaman utama atau keranjang
     }
     
     

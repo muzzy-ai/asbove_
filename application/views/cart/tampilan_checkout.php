@@ -7,6 +7,7 @@
                 <th style="padding: 10px; border-bottom: 2px solid #ddd;">Nama Produk</th>
                 <th style="padding: 10px; border-bottom: 2px solid #ddd;">Harga</th>
                 <th style="padding: 10px; border-bottom: 2px solid #ddd;">Jumlah</th>
+                <th style="padding: 10px; border-bottom: 2px solid #ddd;">Size</th>
                 <th style="padding: 10px; border-bottom: 2px solid #ddd;">Subtotal</th>
             </tr>
         </thead>
@@ -21,6 +22,7 @@
                         <td style="padding: 10px;"><?= $item['name']; ?></td>
                         <td style="padding: 10px;">Rp<?= number_format($item['price'], 0, ',', '.'); ?></td>
                         <td style="padding: 10px; text-align: center;"><?= $item['qty']; ?></td>
+                        <td style="padding: 10px; text-align: center;"><?= isset($item['options']['size']) ? $item['options']['size'] : '-'; ?></td>
                         <td style="padding: 10px;">Rp<?= number_format($item['subtotal'], 0, ',', '.'); ?></td>
                     </tr>
             <?php 
@@ -28,10 +30,11 @@
             } else { 
             ?>
                 <tr>
-                    <td colspan="4" style="padding: 15px; text-align: center; font-size: 18px; color: #666;">Keranjang masih kosong</td>
+                    <td colspan="5" style="padding: 15px; text-align: center; font-size: 18px; color: #666;">Keranjang masih kosong</td>
                 </tr>
             <?php } ?>
         </tbody>
+
         <?php if (!empty($cart_items)) { ?>
         <tfoot>
             <tr style="background-color: #f8f9fa; font-weight: bold;">
@@ -43,7 +46,7 @@
     </table>
 
     <?php if (!empty($cart_items)) { ?>
-    <form action="<?= base_url('Checkout/process_payment') ?>" method="POST" style="margin-top: 20px;">
+    <form id="payment-form" action="<?= base_url('Checkout/process_payment') ?>" method="POST" style="margin-top: 20px;">
         <div class="form-group">
             <label for="name" style="font-weight: bold;">Nama Lengkap</label>
             <input type="text" id="name" name="name" class="form-control" required>
@@ -70,11 +73,49 @@
         </div>
 
         <input type="hidden" name="total" value="<?= $total; ?>">
+        <input type="hidden" id="snapToken" name="snapToken" value="">
 
         <div style="display: flex; justify-content: space-between; margin-top: 20px;">
             <a href="<?= base_url('Cart/detail_keranjang') ?>" style="text-decoration: none; background-color: #f0ad4e; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;">Kembali ke Keranjang</a>
-            <button type="submit" style="background-color: #8cbf50; color: white; padding: 10px 20px; border-radius: 5px; border: none; font-weight: bold;">Bayar Sekarang</button>
+            <button type="button" id="pay-button" style="background-color: #8cbf50; color: white; padding: 10px 20px; border-radius: 5px; border: none; font-weight: bold;">Bayar Sekarang</button>
         </div>
     </form>
     <?php } ?>
 </div>
+
+<script src="https://app.midtrans.com/snap/snap.js" data-client-key="<?= $client_key ?>"></script>
+<script>
+    document.getElementById('pay-button').addEventListener('click', function (event) {
+        event.preventDefault();
+        let form = document.getElementById('payment-form');
+        let formData = new FormData(form);
+
+        fetch("<?= base_url('Checkout/process_payment') ?>", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                snap.pay(data.token, {
+                    onSuccess: function(result) {
+                        document.getElementById("snapToken").value = data.token;
+                        form.submit();
+                    },
+                    onPending: function(result) {
+                        document.getElementById("snapToken").value = data.token;
+                        form.submit();
+                    },
+                    onError: function(result) {
+                        alert("Pembayaran gagal, silakan coba lagi.");
+                    }
+                });
+            } else {
+                alert("Gagal mendapatkan token pembayaran.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    });
+</script>
