@@ -38,9 +38,11 @@
                                 <a href="<?= base_url('admin/pesanan_detail?id=' . $pesanan->id); ?>" class="btn btn-primary btn-sm">
                                     <i class="bi bi-eye"></i> Detail
                                 </a>
-                                <a href="<?= base_url('admin/delete?id=' . $pesanan->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus pesanan ini?');">
+                                <a href="<?= site_url('admin/delete?id=' . $pesanan->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Hapus pesanan ini?');">
                                     <i class="bi bi-trash"></i> Hapus
                                 </a>
+
+
                             </td>
                         </tr>
                     <?php endforeach; ?>

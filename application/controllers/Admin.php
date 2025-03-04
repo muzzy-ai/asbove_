@@ -67,18 +67,17 @@ class Admin extends CI_Controller
     // Menghapus pesanan berdasarkan ID
     public function delete()
     {
-        $order_id = $this->input->get('id', true);
-        if (!empty($order_id)) {
-            $delete = $this->admin_model->delete_order($order_id);
-
-            if ($delete) {
-                $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible fade show" role="alert"><strong>Success </strong>Data Berhasil Di Hapus!<i class="remove ti-close" data-dismiss="alert"></i></div>');
-            } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger alert-dismissible fade show" role="alert"><strong>UPSS! </strong>Data Gagal Di Hapus! <i class="remove ti-close" data-dismiss="alert"></i></div>');
-            }
-            redirect('admin/pesanan');
-        } else {
+        $id = $this->input->get('id');
+        
+        if (!$id) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger">ID tidak valid!</div>');
             redirect('admin/pesanan');
         }
+
+        $this->db->where('id', $id);
+        $this->db->delete('orders');
+
+        $this->session->set_flashdata('message', '<div class="alert alert-success">Pesanan berhasil dihapus!</div>');
+        redirect('admin/pesanan');
     }
 }

@@ -83,8 +83,9 @@
     <?php } ?>
 </div>
 
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-_Lmy8ZfnhcNSxh3b"></script>
 <script>
-    document.getElementById('pay-button').addEventListener('click', function () {
+        document.getElementById('pay-button').addEventListener('click', function () {
         var formData = new FormData();
         formData.append('name', document.getElementById('name').value);
         formData.append('email', document.getElementById('email').value);
@@ -98,16 +99,26 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log("Response: ", data);
             if (data.token) {
-                snap.pay(data.token);
+                snap.pay(data.token, {
+                    onSuccess: function(result) {
+                        alert("Pembayaran berhasil! Silakan cek email Anda.");
+                        window.location.href = "<?= base_url('checkout/payment_callback'); ?>";
+                    },
+                    onPending: function(result) {
+                        alert("Menunggu pembayaran! Silakan cek kembali nanti.");
+                    },
+                    onError: function(result) {
+                        alert("Pembayaran gagal! Silakan coba lagi.");
+                    }
+                });
             } else {
                 alert("Terjadi kesalahan: " + data.error);
             }
         })
         .catch(error => {
-            console.error("Error:", error);
             alert("Gagal memproses pembayaran!");
         });
     });
+
 </script>

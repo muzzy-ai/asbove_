@@ -53,3 +53,6 @@ $route['default_controller'] = 'beranda';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['midtrans/callback'] = 'checkout/midtrans_callback';
+$route['admin/delete'] = 'admin/delete';
+$route['checkout/payment_callback'] = 'checkout/payment_callback';
+
