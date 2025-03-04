@@ -50,17 +50,20 @@ class Checkout extends CI_Controller
     public function process_payment()
     {
         $post = $this->input->post();
+        log_message('error', 'POST Data: ' . print_r($post, true));
+
         if (!$post) {
-            redirect('checkout');
+            log_message('error', 'POST data tidak ditemukan!');
+            echo json_encode(['error' => 'POST data tidak ditemukan!']);
             return;
         }
 
-        // Pastikan semua data yang dibutuhkan tersedia
-        $name = $post['name'] ?? null;
-        $email = $post['email'] ?? null;
-        $address = $post['address'] ?? null;
+        // Validasi input
+        $name     = $post['name'] ?? null;
+        $email    = $post['email'] ?? null;
+        $address  = $post['address'] ?? null;
         $shipping = $post['shipping'] ?? null;
-        $total = isset($post['total']) ? (int) $post['total'] : 0;
+        $total    = isset($post['total']) ? (int)$post['total'] : 0;
 
         if (!$name || !$email || !$address || !$shipping || $total <= 0) {
             echo json_encode(['error' => 'Data tidak lengkap']);
@@ -69,52 +72,117 @@ class Checkout extends CI_Controller
 
         // Simpan Order ke Database
         $order_id = 'ORDER-' . time();
-        $order_data = array(
-            'id' => $order_id,
-            'nama_pelanggan' => $name,
-            'email' => $email,
-            'alamat' => $address,
+        $order_data = [
+            'id'                => $order_id,
+            'nama_pelanggan'    => $name,
+            'email'             => $email,
+            'alamat'            => $address,
             'metode_pengiriman' => $shipping,
-            'total_pembelian' => $total,
-            'status' => 'pending',
-            'created_at' => date('Y-m-d H:i:s')
-        );
+            'total_pembelian'   => $total,
+            'status'            => 'pending',
+            'created_at'        => date('Y-m-d H:i:s')
+        ];
 
         $cart_items = $this->cart->contents();
         $this->Checkout_model->insert_order($order_data, $cart_items);
 
-        // Midtrans Payment Gateway
-        $transaction_details = array(
-            'order_id' => $order_id,
-            'gross_amount' => $total
-        );
+        // Siapkan data transaksi untuk Midtrans
+        $transaction_details = [
+            'order_id'    => $order_id,
+            'gross_amount'=> $total
+        ];
 
         $item_details = [];
         foreach ($cart_items as $item) {
-            $item_details[] = array(
-                'id' => $item['id'],
-                'price' => (int) $item['price'],
+            $item_details[] = [
+                'id'       => $item['id'],
+                'price'    => (int)$item['price'],
                 'quantity' => $item['qty'],
-                'name' => $item['name']
-            );
+                'name'     => $item['name']
+            ];
         }
 
-        $customer_details = array(
+        $customer_details = [
             'first_name' => $name,
-            'email' => $email
-        );
+            'email'      => $email
+        ];
 
-        $transaction = array(
+        $transaction = [
             'transaction_details' => $transaction_details,
-            'item_details' => $item_details,
-            'customer_details' => $customer_details
-        );
+            'item_details'        => $item_details,
+            'customer_details'    => $customer_details
+        ];
 
         try {
+            // Log data transaksi untuk debugging
+            log_message('error', 'Data transaksi ke Midtrans: ' . print_r($transaction, true));
+            // Dapatkan snap token dari Midtrans
             $snapToken = \Midtrans\Snap::getSnapToken($transaction);
+
+            // Simpan transaksi ke database
+            $transaction_data = [
+                'order_id'           => $order_id,
+                'payment_type'       => '',
+                'gross_amount'       => $total,
+                'transaction_status' => 'pending',
+                'created_at'         => date('Y-m-d H:i:s'),
+                'updated_at'         => date('Y-m-d H:i:s')
+            ];
+            $this->Checkout_model->insert_transaction($transaction_data);
+    
             echo json_encode(['token' => $snapToken]);
         } catch (Exception $e) {
-            echo json_encode(['error' => $e->getMessage()]);
+            log_message('error', 'Error dari Midtrans: ' . $e->getMessage());
+            echo json_encode(['error' => 'Gagal memproses pembayaran! ' . $e->getMessage()]);
         }
     }
+
+    public function midtrans_callback()
+    {
+        // Ambil data JSON dari Midtrans
+        $json_str = file_get_contents('php://input');
+        $response = json_decode($json_str, true);
+
+        log_message('error', 'Midtrans Callback: ' . print_r($response, true));
+
+        if (!$response) {
+            log_message('error', 'Invalid Midtrans callback data');
+            return;
+        }
+
+        $order_id = $response['order_id'] ?? null;
+        $transaction_id = $response['transaction_id'] ?? null;
+        $status = $response['transaction_status'] ?? null;
+        $payment_type = $response['payment_type'] ?? null;
+        $gross_amount = $response['gross_amount'] ?? null;
+
+        if (!$order_id || !$transaction_id || !$status) {
+            log_message('error', 'Missing required parameters in Midtrans callback');
+            return;
+        }
+
+        // Perbarui status transaksi di database
+        $update_data = [
+            'transaction_id'     => $transaction_id,
+            'payment_type'       => $payment_type,
+            'gross_amount'       => $gross_amount,
+            'transaction_status' => $status,
+            'updated_at'         => date('Y-m-d H:i:s')
+        ];
+    
+        $this->Checkout_model->update_transaction($order_id, $update_data);
+
+        // Jika pembayaran sukses, ubah status order
+        if ($status == 'settlement' || $status == 'capture') {
+            $this->Checkout_model->update_order_status($order_id, 'paid');
+        } elseif ($status == 'cancel' || $status == 'expire' || $status == 'deny') {
+            $this->Checkout_model->update_order_status($order_id, 'failed');
+        }
+
+        log_message('error', 'Transaction updated: ' . print_r($update_data, true));
+    }
+
+
+
+
 }

@@ -83,39 +83,31 @@
     <?php } ?>
 </div>
 
-<script src="https://app.midtrans.com/snap/snap.js" data-client-key="<?= $client_key ?>"></script>
 <script>
-    document.getElementById('pay-button').addEventListener('click', function (event) {
-        event.preventDefault();
-        let form = document.getElementById('payment-form');
-        let formData = new FormData(form);
+    document.getElementById('pay-button').addEventListener('click', function () {
+        var formData = new FormData();
+        formData.append('name', document.getElementById('name').value);
+        formData.append('email', document.getElementById('email').value);
+        formData.append('address', document.getElementById('address').value);
+        formData.append('shipping', document.getElementById('shipping').value);
+        formData.append('total', <?= $total; ?>);
 
-        fetch("<?= base_url('Checkout/process_payment') ?>", {
+        fetch("<?= base_url('checkout/process_payment'); ?>", {
             method: "POST",
             body: formData
         })
         .then(response => response.json())
         .then(data => {
+            console.log("Response: ", data);
             if (data.token) {
-                snap.pay(data.token, {
-                    onSuccess: function(result) {
-                        document.getElementById("snapToken").value = data.token;
-                        form.submit();
-                    },
-                    onPending: function(result) {
-                        document.getElementById("snapToken").value = data.token;
-                        form.submit();
-                    },
-                    onError: function(result) {
-                        alert("Pembayaran gagal, silakan coba lagi.");
-                    }
-                });
+                snap.pay(data.token);
             } else {
-                alert("Gagal mendapatkan token pembayaran.");
+                alert("Terjadi kesalahan: " + data.error);
             }
         })
         .catch(error => {
             console.error("Error:", error);
+            alert("Gagal memproses pembayaran!");
         });
     });
 </script>
